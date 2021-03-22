@@ -1,12 +1,11 @@
 package manager;
 import entity.HibernateFactory;
 import entity.Student;
-import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
+import javax.persistence.criteria.*;
 import java.util.List;
 
 public class StudentManager {
@@ -56,7 +55,7 @@ public class StudentManager {
         return isDeleted;
     }
 
-    public Student getStudent(Long id){
+    public Student findById(Long id){
         HibernateFactory hibernateFactory = new HibernateFactory();
         Session session = hibernateFactory.getSessionFactory().openSession();
         System.out.println("Transaction started");
@@ -80,49 +79,40 @@ public class StudentManager {
         return student;
     }
 
-    public List<Student> findStudent(String text){
+    public List<Student> findStudent(String surname, String name){
         HibernateFactory hibernateFactory = new HibernateFactory();
         Session session = hibernateFactory.getSessionFactory().openSession();
-        Criteria criteria = session.createCriteria(Student.class);
-        criteria.add(Restrictions.eq("surname", text));
-        List<Student> results = criteria.list();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Student> criteriaQuery = criteriaBuilder.createQuery(Student.class);
+        Root<Student> root = criteriaQuery.from(Student.class);
+        Predicate[] predicates = new Predicate[2];
+        predicates[0] = criteriaBuilder.like(root.get("surname"), "%"+surname+"%");
+        predicates[1] = criteriaBuilder.like(root.get("name"), "%"+name+"%");
+        criteriaQuery.select(root).where(predicates);
+        Query<Student> query = session.createQuery(criteriaQuery);
+        List<Student> results = query.getResultList();
         for(Student i : results)
             System.out.println(i);
         return results;
     }
 
-    public List<Student> searchPartial(String text){
+    public List<Student> sort(String column, String type) {
         HibernateFactory hibernateFactory = new HibernateFactory();
         Session session = hibernateFactory.getSessionFactory().openSession();
-        Criteria criteria = session.createCriteria(Student.class);
-        criteria.add(Restrictions.like("surname", "%"+text+"%", MatchMode.ANYWHERE));
-        List<Student> results = criteria.list();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Student> criteriaQuery = criteriaBuilder.createQuery(Student.class);
+        Root<Student> root = criteriaQuery.from(Student.class);
+        if(type.equalsIgnoreCase("asc")){
+            criteriaQuery.orderBy(criteriaBuilder.asc(root.get(column)));
+        } else if(type.equalsIgnoreCase("desc")) {
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get(column)));
+        }
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get(column)));
+        Query<Student> query = session.createQuery(criteriaQuery);
+        List<Student> results = query.getResultList();
+        System.out.println("Sortowanie");
         for(Student i : results)
             System.out.println(i);
         return results;
     }
-
-    public List<Student> findByNameAndSurname(String name, String surname){
-        HibernateFactory hibernateFactory = new HibernateFactory();
-        Session session = hibernateFactory.getSessionFactory().openSession();
-        Criteria criteria = session.createCriteria(Student.class);
-        criteria.add(Restrictions.eq("name", name));
-        criteria.add(Restrictions.eq("surname", surname));
-        List<Student> results = criteria.list();
-        for(Student i : results)
-            System.out.println(i);
-        return results;
-    }
-
-    /*public List<Student> sort(String type){
-
-        HibernateFactory hibernateFactory = new HibernateFactory();
-        Session session = hibernateFactory.getSessionFactory().openSession();
-        Criteria criteria = session.createCriteria(Student.class);
-        criteria.addOrder(Order.asc(type));
-        List<Student> results = criteria.list();
-        for(Student i : results)
-            System.out.println(i);
-        return results;
-    }*/
 }

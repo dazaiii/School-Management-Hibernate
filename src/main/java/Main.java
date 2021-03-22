@@ -5,6 +5,8 @@ import manager.StudentManager;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
         Class class1 = new Class();
@@ -20,11 +22,13 @@ public class Main {
         StudentManager studentManager = new StudentManager();
         studentManager.addStudent(student);
         studentManager.deleteStudent(student);
-        Student foundStudent = studentManager.getStudent(1L);
+        Student foundStudent = studentManager.findById(1L);
         System.out.println("Found student is " + foundStudent.getName() + " " + foundStudent.getSurname());
-        studentManager.findStudent("Krawczyk");
-        studentManager.searchPartial("ra");
-        studentManager.findByNameAndSurname("Krzysztof", "Krawczyk");
-        //studentManager.sort("surname");
+        studentManager.findStudent("Kra","");
+        studentManager.findStudent("","Krzy");
+        List<Student> list = studentManager.sort("surname", "asc");
+        //for(Student i : list)
+        //    System.out.println(i.toString());
+
     }
 }

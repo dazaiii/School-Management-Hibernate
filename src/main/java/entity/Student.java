@@ -70,12 +70,16 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" +
+        String student =
+                "Student{" +
                 "idStudent=" + idStudent +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", journalNumber=" + journalNumber +
-                ", idClass=" + idClass +
-                '}';
+                ", journalNumber=" + journalNumber;
+                if (idClass != null) {
+                    student += ", Class=" + idClass.getClassName();
+                }
+                student += '}';
+                return student;
     }
 }
