@@ -1,10 +1,7 @@
 package manager;
-
 import entity.HibernateFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import javax.persistence.criteria.CriteriaBuilder;
 
 public class EntityManager {
     public boolean add(Object object){

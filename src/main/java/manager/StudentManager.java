@@ -22,7 +22,6 @@ public class StudentManager {
     public Student findById(Long id){
         HibernateFactory hibernateFactory = new HibernateFactory();
         Session session = hibernateFactory.getSessionFactory().openSession();
-        System.out.println("Transaction started");
         Student student = null;
         try {
             student = session.load(Student.class, id);
@@ -35,7 +34,6 @@ public class StudentManager {
             //inicjalizuje proxy, nie trzeba transakcji
         } catch(Exception e){
             e.printStackTrace();
-            System.out.println("Student cannot be found");
         } finally {
             session.close();
             hibernateFactory.getSessionFactory().close();
@@ -91,7 +89,4 @@ public class StudentManager {
         return results;
     }
 
-    public void addGrade(){
-
-    }
 }
