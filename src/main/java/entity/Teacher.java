@@ -20,8 +20,7 @@ public class Teacher {
     @Column(name = "subject")
     private String subject;
 
-    @OneToMany
-    @JoinColumn(name = "idTeacher", referencedColumnName = "idTeacher")
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.REMOVE)
     private List<Grade> grades;
 
     public Long getIdTeacher() {

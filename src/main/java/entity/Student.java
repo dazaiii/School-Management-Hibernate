@@ -24,8 +24,7 @@ public class Student {
     @JoinColumn(name = "idClass", referencedColumnName = "idClass")
     private Class idClass;
 
-    @OneToMany
-    @JoinColumn(name = "idStudent", referencedColumnName = "idStudent")
+    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
     private List<Grade> grades;
 
     public Long getIdStudent() {
@@ -68,6 +67,14 @@ public class Student {
         this.idClass = idClass;
     }
 
+    public List<Grade> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(List<Grade> grades) {
+        this.grades = grades;
+    }
+
     @Override
     public String toString() {
         String student =
@@ -80,6 +87,12 @@ public class Student {
                     student += ", Class=" + idClass.getClassName();
                 }
                 student += '}';
+                if(grades != null){
+                    for(Grade i: grades){
+                        System.out.println(i.getIdGrade() + ", " + i.getGrade()/* + ", " + i.getTeacher()*/);
+                    }
+                }
+
                 return student;
     }
 }
