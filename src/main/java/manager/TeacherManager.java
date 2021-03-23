@@ -22,9 +22,10 @@ public class TeacherManager {
         return entityManager.delete(teacher);
     }
 
-    public boolean updateTeacher(Teacher teacher){
+    public Teacher updateTeacher(Teacher teacher){
         EntityManager entityManager = new EntityManager();
-        return entityManager.update(teacher);
+        entityManager.update(teacher);
+        return teacher;
     }
 
     public Teacher findById(Long id){

@@ -42,15 +42,13 @@ public class EntityManager {
         return isDeleted;
     }
 
-    public boolean update(Object object){
+    public Object update(Object object){
         HibernateFactory hibernateFactory = new HibernateFactory();
         Session session = hibernateFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        boolean isUpdated = false;
         try {
             session.update(object);
             session.getTransaction().commit();
-            isUpdated = true;
         } catch(Exception e){
             transaction.rollback();
             e.printStackTrace();
@@ -58,7 +56,7 @@ public class EntityManager {
             session.close();
             hibernateFactory.getSessionFactory().close();
         }
-        return isUpdated;
+        return object;
     }
 
 }

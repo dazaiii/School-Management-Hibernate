@@ -19,9 +19,10 @@ public class StudentManager {
         return entityManager.delete(student);
     }
 
-    public boolean updateStudent(Student student){
+    public Student updateStudent(Student student){
         EntityManager entityManager = new EntityManager();
-        return entityManager.update(student);
+        entityManager.update(student);
+        return student;
     }
 
     public Student findById(Long id){
