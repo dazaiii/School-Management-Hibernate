@@ -3,6 +3,7 @@ package manager;
 import entity.Student;
 import entity.Class;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClassManager {
@@ -23,8 +24,10 @@ public class ClassManager {
     }
 
     public Class addStudent(Class schoolClass, Student student){
-        List<Student> list = schoolClass.getStudents();
+        List<Student> list = new ArrayList<>();
         list.add(student);
+        if(schoolClass.getStudents() != null)
+            list.addAll(schoolClass.getStudents());
         schoolClass.setStudents(list);
         EntityManager entityManager = new EntityManager();
         entityManager.update(schoolClass);
