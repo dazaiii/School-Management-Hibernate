@@ -22,6 +22,11 @@ public class TeacherManager {
         return entityManager.delete(teacher);
     }
 
+    public boolean updateTeacher(Teacher teacher){
+        EntityManager entityManager = new EntityManager();
+        return entityManager.update(teacher);
+    }
+
     public Teacher findById(Long id){
         HibernateFactory hibernateFactory = new HibernateFactory();
         Session session = hibernateFactory.getSessionFactory().openSession();
