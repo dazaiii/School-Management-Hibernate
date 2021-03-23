@@ -13,7 +13,7 @@ public class Grade {
     @Column(name = "grade")
     private int grade;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Student.class)
     @JoinColumn(name = "idStudent", referencedColumnName = "idStudent")
     private Student student;
 
@@ -58,8 +58,6 @@ public class Grade {
         return "Grade{" +
                 "idGrade=" + idGrade +
                 ", grade=" + grade +
-                ", student=" + student +
-                ", teacher=" + teacher +
                 '}';
     }
 }

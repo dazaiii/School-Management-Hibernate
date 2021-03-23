@@ -2,6 +2,7 @@ package entity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "student")
@@ -24,7 +25,7 @@ public class Student {
     @JoinColumn(name = "idClass", referencedColumnName = "idClass")
     private Class idClass;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Grade> grades;
 
     public Long getIdStudent() {
