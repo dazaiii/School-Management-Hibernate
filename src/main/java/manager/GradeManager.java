@@ -32,13 +32,13 @@ public class GradeManager {
     }
 
     public double averageGrades(Student student, Teacher teacher){
-        List<Grade> list = student.getGrades();
-        if(list == null){
+        List<Grade> grades = student.getGrades();
+        if(grades == null){
             return 0;
         }
         double avg = 0;
         int counter = 0;
-        for(Grade i: list){
+        for(Grade i: grades){
             if(i.getTeacher().getSubject().equals(teacher.getSubject())){
                 avg += i.getGrade();
                 counter++;
