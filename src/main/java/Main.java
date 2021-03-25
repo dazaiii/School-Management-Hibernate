@@ -1,34 +1,56 @@
-import entity.HibernateFactory;
-import entity.Student;
+import entity.*;
 import entity.Class;
+import manager.ClassManager;
+import manager.GradeManager;
 import manager.StudentManager;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import manager.TeacherManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Class class1 = new Class();
-        class1.setIdClass(2L);
-        class1.setClassName("1b");
-        class1.setMaxAmount(30);
-
+        //Examples
         Student student = new Student();
-        student.setName("Krzysztof");
-        student.setSurname("Krawczyk");
-        //student.setIdClass(class1);
-        student.setJournalNumber(2);
         StudentManager studentManager = new StudentManager();
+        student.setName("Jan");
+        student.setSurname("Kowalski");
+        student.setJournalNumber(1);
         studentManager.addStudent(student);
+        studentManager.findStudent("Kowalski", "Jan");
+        student.setName("Krzysztof");
+        student.setSurname("Kowalski");
+        student.setJournalNumber(15);
+        studentManager.updateStudent(student);
+
+        Teacher teacher = new Teacher();
+        TeacherManager teacherManager = new TeacherManager();
+        teacher.setName("Adam");
+        teacher.setSurname("Nowak");
+        teacher.setSubject("Matematyka");
+        teacherManager.addTeacher(teacher);
+
+        Class classroom = new Class();
+        ClassManager classManager = new ClassManager();
+        classroom.setMaxAmount(30);
+        classroom.setClassName("1a");
+        List<Student> list = new ArrayList();
+        list.add(student);
+        classroom.setStudents(list);
+
+        classManager.addClass(classroom);
+
+        Grade grade = new Grade();
+        GradeManager gradeManager = new GradeManager();
+        grade.setGrade(5);
+        grade.setTeacher(teacher);
+        grade.setStudent(student);
+        gradeManager.addGrade(grade);
+
+        gradeManager.deleteGrade(grade);
         studentManager.deleteStudent(student);
-        Student foundStudent = studentManager.findById(1L);
-        System.out.println("Found student is " + foundStudent.getName() + " " + foundStudent.getSurname());
-        studentManager.findStudent("Kra","");
-        studentManager.findStudent("","Krzy");
-        List<Student> list = studentManager.sort("surname", "asc");
-        //for(Student i : list)
-        //    System.out.println(i.toString());
+        teacherManager.deleteTeacher(teacher);
+        classManager.deleteClass(classroom);
 
     }
 }
